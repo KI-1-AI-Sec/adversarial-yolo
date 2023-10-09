@@ -24,7 +24,7 @@ class BaseConfig(object):
         self.scheduler_factory = lambda x: optim.lr_scheduler.ReduceLROnPlateau(x, 'min', patience=50)
         self.max_tv = 0
 
-        self.batch_size = 20
+        self.batch_size = 40
 
         self.loss_target = lambda obj, cls: obj * cls
 
