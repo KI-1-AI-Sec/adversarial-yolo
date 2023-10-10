@@ -101,7 +101,7 @@ class Experiment1Desktop(Experiment1):
         """
         super().__init__()
 
-        self.batch_size = 8
+        self.batch_size = 16
         self.patch_size = 400
 
 
@@ -113,7 +113,7 @@ class ReproducePaperObj(BaseConfig):
     def __init__(self):
         super().__init__()
 
-        self.batch_size = 8
+        self.batch_size = 16
         self.patch_size = 300
 
         self.patch_name = 'ObjectOnlyPaper'
