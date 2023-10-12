@@ -18,9 +18,9 @@ We use Python 3.6.
 Make sure that you have a working implementation of PyTorch installed, to do this see: https://pytorch.org/
 To visualise progress we use tensorboardX which can be installed using pip:
 ```
-pip install tensorboardX tensorboard
+pip install -r requirements.txt
 ```
-No installation is necessary, you can simply run the python code straight from this directory.
+No other installation for this project is necessary, you can simply run the python code straight from this directory.
 
 Make sure you have the YOLOv2 MS COCO weights:
 ```

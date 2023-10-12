@@ -20,6 +20,8 @@ import patch_config
 import sys
 import time
 
+import os
+
 class PatchTrainer(object):
     def __init__(self, mode):
         self.config = patch_config.patch_configs[mode]()
@@ -153,10 +155,13 @@ class PatchTrainer(object):
                 print('  NPS LOSS: ', ep_nps_loss)
                 print('   TV LOSS: ', ep_tv_loss)
                 print('EPOCH TIME: ', et1-et0)
-                #im = transforms.ToPILImage('RGB')(adv_patch_cpu)
-                #plt.imshow(im)
-                #plt.show()
-                #im.save("saved_patches/patchnew1.jpg")
+                # uncommented (matthew)
+                im = transforms.ToPILImage('RGB')(adv_patch_cpu)
+                plt.imshow(im)
+                plt.show()
+                if not os.path.exists('saved_patches'):
+                    os.makedirs('saved_patches') # create saved_patches folder in CWD
+                im.save("saved_patches/patchnew1.jpg")
                 del adv_batch_t, output, max_prob, det_loss, p_img_batch, nps_loss, tv_loss, loss
                 torch.cuda.empty_cache()
             et0 = time.time()
@@ -203,5 +208,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-

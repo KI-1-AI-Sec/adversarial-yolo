@@ -113,7 +113,8 @@ class ReproducePaperObj(BaseConfig):
     def __init__(self):
         super().__init__()
 
-        self.batch_size = 16
+        #self.batch_size = 8 # original batch size
+        self.batch_size = 16 # batch size of 8 takes about 5Gb of VRAM, 16 should take about 10Gb
         self.patch_size = 300
 
         self.patch_name = 'ObjectOnlyPaper'
