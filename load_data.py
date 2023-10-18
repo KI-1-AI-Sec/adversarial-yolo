@@ -15,7 +15,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
 
-from darknet import Darknet
+from ultralytics import YOLO
 
 from median_pool import MedianPool2d
 
@@ -326,6 +326,46 @@ class PatchGenerator(nn.Module):
     def forward(self, *input):
         pass
 '''
+
+#Internal representation of airbus dataset
+class AirbusDataset(Dataset):
+    #initiializes the class
+    def __init__(self, img_dir, lab_dir, shuffle=True):
+        #image dir, label dir, and shuffle
+        self.img_dir = img_dir
+        self.lab_dir = lab_dir
+        self.shuffle = shuffle
+
+        #num of images and labels
+        n_images = len(fnmatch.filter(os.listdir(img_dir), '*.jpg'))
+        n_labels = len(fnmatch.filter(os.listdir(lab_dir), '*.txt'))
+        self.img_names = fnmatch.filter(os.listdir(img_dir), '*.jpg')
+        #make sure images and labels are the same number
+        assert n_images == n_labels,"Labels does not match images"
+        #self length = num of images
+        self.len = n_images
+
+    def __len__(self):
+        return self.len
+    
+    def __getitem__(self, idx):
+        assert idx <= len(self), 'index range error'
+        img_path = os.path.join(self.img_dir, self.img_names[idx])
+        lab_path = os.path.join(self.lab_dir, self.img_names[idx]).replace('.jpg', '.txt')
+        image = Image.open(img_path).convert('RGB')
+        if os.path.getsize(lab_path):       #check to see if label file contains data. 
+            label = np.loadtxt(lab_path)
+        else:
+            label = np.ones([5])
+
+        label = torch.from_numpy(label).float()
+        if label.dim() == 1:
+            label = label.unsqueeze(0)
+
+        transform = transforms.ToTensor()
+        image = transform(image)
+        return image, label
+        
 
 class InriaDataset(Dataset):
     """InriaDataset: representation of the INRIA person dataset.

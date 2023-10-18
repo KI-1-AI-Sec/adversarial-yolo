@@ -121,6 +121,16 @@ class ReproducePaperObj(BaseConfig):
         self.max_tv = 0.165
 
         self.loss_target = lambda obj, cls: obj
+#test config
+#barebones right now, probably needs future modification
+class AircraftTest(BaseConfig):
+    def __init__(self):
+        super().__init__()
+        self.batch_size = 32
+        self.patch_size = 300
+        self.img_dir='airbusdata/val/images'
+        self.img_dir='airbusdata/val/labels'
+
 
 
 patch_configs = {
@@ -130,5 +140,6 @@ patch_configs = {
     "exp2_high_res": Experiment2HighRes,
     "exp3_low_res": Experiment3LowRes,
     "exp4_class_only": Experiment4ClassOnly,
-    "paper_obj": ReproducePaperObj
+    "paper_obj": ReproducePaperObj,
+    "aircraft":AircraftTest
 }

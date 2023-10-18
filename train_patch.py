@@ -21,22 +21,26 @@ import sys
 import time
 
 import os
-
+#patch trainer class
+#takes patch config class as argument
 class PatchTrainer(object):
     def __init__(self, mode):
+        #get the patch config
         self.config = patch_config.patch_configs[mode]()
+        #load the model
+        self.yolo_model = YOLO('best.pt')
 
-        self.darknet_model = Darknet(self.config.cfgfile)
-        self.darknet_model.load_weights(self.config.weightfile)
-        self.darknet_model = self.darknet_model.eval().cuda() # TODO: Why eval?
+        #patch helpers
         self.patch_applier = PatchApplier().cuda()
         self.patch_transformer = PatchTransformer().cuda()
         self.prob_extractor = MaxProbExtractor(0, 80, self.config).cuda()
         self.nps_calculator = NPSCalculator(self.config.printfile, self.config.patch_size).cuda()
         self.total_variation = TotalVariation().cuda()
 
+        #tensorboard writer
         self.writer = self.init_tensorboard(mode)
 
+    #init tensorboard writer
     def init_tensorboard(self, name=None):
         subprocess.Popen(['tensorboard', '--logdir=runs'])
         if name is not None:
@@ -44,17 +48,19 @@ class PatchTrainer(object):
             return SummaryWriter(f'runs/{time_str}_{name}')
         else:
             return SummaryWriter()
-
+        
+    #patch training loop
     def train(self):
         """
         Optimize a patch to generate an adversarial example.
         :return: Nothing
         """
 
-        img_size = self.darknet_model.height
+        #define image size, batch size, epochs
+        #img_size = self.darknet_model.height
+        img_size = 512
         batch_size = self.config.batch_size
-        n_epochs = 10000
-        max_lab = 14
+        n_epochs = 10
 
         time_str = time.strftime("%Y%m%d-%H%M%S")
 
@@ -63,47 +69,54 @@ class PatchTrainer(object):
         #adv_patch_cpu = self.read_image("saved_patches/patchnew0.jpg")
 
         adv_patch_cpu.requires_grad_(True)
+        #Loads the data set
+        train_loader = torch.utils.data.DataLoader(AirbusDataset(self.config.img_dir, self.config.lab_dir,shuffle=True),batch_size=batch_size,shuffle=True,num_workers=10)
 
-        train_loader = torch.utils.data.DataLoader(InriaDataset(self.config.img_dir, self.config.lab_dir, max_lab, img_size,
-                                                                shuffle=True),
-                                                   batch_size=batch_size,
-                                                   shuffle=True,
-                                                   num_workers=10)
+        #print epoch length
         self.epoch_length = len(train_loader)
         print(f'One epoch is {len(train_loader)}')
 
+        #define optimizer and scheduler
         optimizer = optim.Adam([adv_patch_cpu], lr=self.config.start_learning_rate, amsgrad=True)
         scheduler = self.config.scheduler_factory(optimizer)
 
         et0 = time.time()
+        #main training loop
         for epoch in range(n_epochs):
             ep_det_loss = 0
             ep_nps_loss = 0
             ep_tv_loss = 0
             ep_loss = 0
             bt0 = time.time()
+            #image batch loaded from dataset
             for i_batch, (img_batch, lab_batch) in tqdm(enumerate(train_loader), desc=f'Running epoch {epoch}',
                                                         total=self.epoch_length):
                 with autograd.detect_anomaly():
                     img_batch = img_batch.cuda()
                     lab_batch = lab_batch.cuda()
                     #print('TRAINING EPOCH %i, BATCH %i'%(epoch, i_batch))
+                    #define the patch, transform it, and apply it to the image batch
                     adv_patch = adv_patch_cpu.cuda()
                     adv_batch_t = self.patch_transformer(adv_patch, lab_batch, img_size, do_rotate=True, rand_loc=False)
                     p_img_batch = self.patch_applier(img_batch, adv_batch_t)
-                    p_img_batch = F.interpolate(p_img_batch, (self.darknet_model.height, self.darknet_model.width))
+                    #scale the image batch to the proper size(darknet.model.height, darknet.model.width)
+                    p_img_batch = F.interpolate(p_img_batch, (512, 512))
 
+                    #gets the image?
+                    #probably unnecessary
                     img = p_img_batch[1, :, :,]
                     img = transforms.ToPILImage()(img.detach().cpu())
                     #img.show()
 
-
-                    output = self.darknet_model(p_img_batch)
+                    #get output from patch
+                    #calculate probabilities
+                    #and define printability and smoothness
+                    output = self.yolo_model(p_img_batch)
                     max_prob = self.prob_extractor(output)
                     nps = self.nps_calculator(adv_patch)
                     tv = self.total_variation(adv_patch)
 
-
+                    #calculate loss
                     nps_loss = nps*0.01
                     tv_loss = tv*2.5
                     det_loss = torch.mean(max_prob)
@@ -114,6 +127,7 @@ class PatchTrainer(object):
                     ep_tv_loss += tv_loss.detach().cpu().numpy()
                     ep_loss += loss
 
+                    #optimize the patch
                     loss.backward()
                     optimizer.step()
                     optimizer.zero_grad()
@@ -123,6 +137,7 @@ class PatchTrainer(object):
                     if i_batch%5 == 0:
                         iteration = self.epoch_length * epoch + i_batch
 
+                        #tensorboard output
                         self.writer.add_scalar('total_loss', loss.detach().cpu().numpy(), iteration)
                         self.writer.add_scalar('loss/det_loss', det_loss.detach().cpu().numpy(), iteration)
                         self.writer.add_scalar('loss/nps_loss', nps_loss.detach().cpu().numpy(), iteration)
