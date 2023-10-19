@@ -112,14 +112,22 @@ class PatchTrainer(object):
                     #calculate probabilities
                     #and define printability and smoothness
                     output = self.yolo_model(p_img_batch)
-                    max_prob = self.prob_extractor(output)
+
+                    #get the average confidence loss
+                    # for an image that has the patch applied            
+                    avg_prob = []
+                    for r in output:
+                        box = r.boxes.conf
+                        avg_prob.append(box)
+                    avg_prob = torch.cat(avg_prob, 0)
+                    
                     nps = self.nps_calculator(adv_patch)
                     tv = self.total_variation(adv_patch)
 
                     #calculate loss
                     nps_loss = nps*0.01
                     tv_loss = tv*2.5
-                    det_loss = torch.mean(max_prob)
+                    det_loss = torch.mean(avg_prob)
                     loss = det_loss + nps_loss + torch.max(tv_loss, torch.tensor(0.1).cuda())
 
                     ep_det_loss += det_loss.detach().cpu().numpy()
@@ -149,7 +157,7 @@ class PatchTrainer(object):
                     if i_batch + 1 >= len(train_loader):
                         print('\n')
                     else:
-                        del adv_batch_t, output, max_prob, det_loss, p_img_batch, nps_loss, tv_loss, loss
+                        del adv_batch_t, output, avg_prob, det_loss, p_img_batch, nps_loss, tv_loss, loss
                         torch.cuda.empty_cache()
                     bt0 = time.time()
             et1 = time.time()
@@ -177,7 +185,7 @@ class PatchTrainer(object):
                 if not os.path.exists('saved_patches'):
                     os.makedirs('saved_patches') # create saved_patches folder in CWD
                 im.save("saved_patches/patchnew1.jpg")
-                del adv_batch_t, output, max_prob, det_loss, p_img_batch, nps_loss, tv_loss, loss
+                del adv_batch_t, output, avg_prob, det_loss, p_img_batch, nps_loss, tv_loss, loss
                 torch.cuda.empty_cache()
             et0 = time.time()
 
