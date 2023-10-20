@@ -48,7 +48,7 @@ class PatchTrainer(object):
             return SummaryWriter(f'runs/{time_str}_{name}')
         else:
             return SummaryWriter()
-        
+
     #patch training loop
     def train(self):
         """
@@ -61,7 +61,7 @@ class PatchTrainer(object):
         #img_size = self.darknet_model.height
         img_size = 512
         batch_size = self.config.batch_size
-        n_epochs = 10
+        n_epochs = 7000
         max_labels  = 20
 
         time_str = time.strftime("%Y%m%d-%H%M%S")
@@ -116,13 +116,13 @@ class PatchTrainer(object):
                     output = self.yolo_model(p_img_batch)
 
                     #get the average confidence loss
-                    # for an image that has the patch applied            
+                    # for an image that has the patch applied
                     avg_prob = []
                     for r in output:
                         box = r.boxes.conf
                         avg_prob.append(box)
                     avg_prob = torch.cat(avg_prob, 0)
-                    
+
                     nps = self.nps_calculator(adv_patch)
                     tv = self.total_variation(adv_patch)
 

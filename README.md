@@ -1,5 +1,5 @@
 # Adversarial YOLO
-This repository is based on the marvis YOLOv2 inplementation: https://github.com/marvis/pytorch-yolo2
+This repository was originally based on the marvis YOLOv2 inplementation: https://github.com/marvis/pytorch-yolo2
 
 This work corresponds to the following paper: https://arxiv.org/abs/1904.08653:
 ```
@@ -13,21 +13,25 @@ This work corresponds to the following paper: https://arxiv.org/abs/1904.08653:
 
 If you use this work, please cite this paper.
 
+We at KSU have now adapted this repository to use YOLOv8 rather than YOLOv2 for the inference implementation
+
 # What you need
-We use Python 3.6.
+We use Python 3.10.
 Make sure that you have a working implementation of PyTorch installed, to do this see: https://pytorch.org/
-To visualise progress we use tensorboardX which can be installed using pip:
+
+This project has prerequisite packages that must be installed using pip before use:
 ```
 pip install -r requirements.txt
 ```
+
 No other installation for this project is necessary, you can simply run the python code straight from this directory.
 
-Make sure you have the YOLOv2 MS COCO weights:
+(no longer used) original YOLOv2 model weights used on INRIA dataset
 ```
 mkdir weights; curl https://pjreddie.com/media/files/yolov2.weights -o weights/yolo.weights
 ```
 
-Get the INRIA dataset:
+(no longer used) Get the INRIA dataset:
 ```
 curl ftp://ftp.inrialpes.fr/pub/lear/douze/data/INRIAPerson.tar -o inria.tar
 tar xf inria.tar
@@ -40,5 +44,5 @@ cp -r yolo-labels inria/Train/pos/
 
 You can generate this patch by running:
 ```
-python train_patch.py paper_obj
+python train_patch.py aircraft
 ```

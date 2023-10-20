@@ -24,7 +24,7 @@ class BaseConfig(object):
         self.scheduler_factory = lambda x: optim.lr_scheduler.ReduceLROnPlateau(x, 'min', patience=50)
         self.max_tv = 0
 
-        self.batch_size = 40
+        self.batch_size = 16
 
         self.loss_target = lambda obj, cls: obj * cls
 
@@ -126,7 +126,7 @@ class ReproducePaperObj(BaseConfig):
 class AircraftTest(BaseConfig):
     def __init__(self):
         super().__init__()
-        self.batch_size = 32
+        self.batch_size = 12
         self.patch_size = 100
         self.img_dir='airbusdata/train/images'
         self.lab_dir='airbusdata/train/labels'
