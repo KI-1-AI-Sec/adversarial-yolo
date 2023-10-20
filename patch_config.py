@@ -127,9 +127,9 @@ class AircraftTest(BaseConfig):
     def __init__(self):
         super().__init__()
         self.batch_size = 32
-        self.patch_size = 300
-        self.img_dir='airbusdata/val/images'
-        self.img_dir='airbusdata/val/labels'
+        self.patch_size = 100
+        self.img_dir='airbusdata/train/images'
+        self.lab_dir='airbusdata/train/labels'
 
 
 

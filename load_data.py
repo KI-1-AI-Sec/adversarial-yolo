@@ -330,10 +330,11 @@ class PatchGenerator(nn.Module):
 #Internal representation of airbus dataset
 class AirbusDataset(Dataset):
     #initiializes the class
-    def __init__(self, img_dir, lab_dir, shuffle=True):
+    def __init__(self, img_dir, lab_dir, max_n_labels, shuffle=True):
         #image dir, label dir, and shuffle
         self.img_dir = img_dir
         self.lab_dir = lab_dir
+        self.max_n_labels = max_n_labels
         self.shuffle = shuffle
 
         #num of images and labels
@@ -364,7 +365,16 @@ class AirbusDataset(Dataset):
 
         transform = transforms.ToTensor()
         image = transform(image)
+        label = self.pad_lab(label)
         return image, label
+    
+    def pad_lab(self, lab):
+        pad_size = self.max_n_labels - lab.shape[0]
+        if(pad_size>0):
+            padded_lab = F.pad(lab, (0, 0, 0, pad_size), value=1)
+        else:
+            padded_lab = lab
+        return padded_lab
         
 
 class InriaDataset(Dataset):

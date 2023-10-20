@@ -56,11 +56,13 @@ class PatchTrainer(object):
         :return: Nothing
         """
 
-        #define image size, batch size, epochs
+        #define image size, batch size, epochs, as well as max labels
+        #note: max labels should ALWAYS be >= the actual max label count inside the data
         #img_size = self.darknet_model.height
         img_size = 512
         batch_size = self.config.batch_size
         n_epochs = 10
+        max_labels  = 20
 
         time_str = time.strftime("%Y%m%d-%H%M%S")
 
@@ -70,7 +72,7 @@ class PatchTrainer(object):
 
         adv_patch_cpu.requires_grad_(True)
         #Loads the data set
-        train_loader = torch.utils.data.DataLoader(AirbusDataset(self.config.img_dir, self.config.lab_dir,shuffle=True),batch_size=batch_size,shuffle=True,num_workers=10)
+        train_loader = torch.utils.data.DataLoader(AirbusDataset(self.config.img_dir, self.config.lab_dir,max_labels,shuffle=True),batch_size=batch_size,shuffle=True,num_workers=10)
 
         #print epoch length
         self.epoch_length = len(train_loader)

@@ -3,6 +3,6 @@ torchvision
 pillow
 tensorboardX
 tensorboard
-
+ultralytics
 tqdm
 matplotlib
