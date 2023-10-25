@@ -28,7 +28,7 @@ class PatchTrainer(object):
         #get the patch config
         self.config = patch_config.patch_configs[mode]()
         #load the model
-        self.yolo_model = YOLO('best.pt')
+        self.yolo_model = YOLO(self.config.model_path)
 
         #patch helpers
         self.patch_applier = PatchApplier().cuda()
@@ -59,7 +59,7 @@ class PatchTrainer(object):
         #define image size, batch size, epochs, as well as max labels
         #note: max labels should ALWAYS be >= the actual max label count inside the data
         #img_size = self.darknet_model.height
-        img_size = 512
+        img_size = self.config.img_height
         batch_size = self.config.batch_size
         n_epochs = 7000
         max_labels  = 20
@@ -102,7 +102,7 @@ class PatchTrainer(object):
                     adv_batch_t = self.patch_transformer(adv_patch, lab_batch, img_size, do_rotate=True, rand_loc=False)
                     p_img_batch = self.patch_applier(img_batch, adv_batch_t)
                     #scale the image batch to the proper size(darknet.model.height, darknet.model.width)
-                    p_img_batch = F.interpolate(p_img_batch, (512, 512))
+                    p_img_batch = F.interpolate(p_img_batch, (self.config.img_height, self.config.img_width))
 
                     #gets the image?
                     #probably unnecessary
@@ -127,8 +127,8 @@ class PatchTrainer(object):
                     tv = self.total_variation(adv_patch)
 
                     #calculate loss
-                    nps_loss = nps*0.01
-                    tv_loss = tv*2.5
+                    nps_loss = nps*self.config.nps_weight
+                    tv_loss = tv*self.config.tv_weight
                     det_loss = torch.mean(avg_prob)
                     loss = det_loss + nps_loss + torch.max(tv_loss, torch.tensor(0.1).cuda())
 

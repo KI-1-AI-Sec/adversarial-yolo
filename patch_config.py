@@ -15,6 +15,11 @@ class BaseConfig(object):
         self.cfgfile = "cfg/yolo.cfg"
         self.weightfile = "weights/yolo.weights"
         self.printfile = "non_printability/30values.txt"
+        self.img_height = 512
+        self.img_width = 512
+        self.model_path = 'best.pt'
+        self.nps_weight = 0.01
+        self.tv_weight = 2.5
         self.patch_size = 300
 
         self.start_learning_rate = 0.03
