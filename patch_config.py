@@ -134,11 +134,11 @@ class ReproducePaperObj(BaseConfig):
 class AircraftTest(BaseConfig):
     def __init__(self):
         super().__init__()
-        self.batch_size = 8
+        self.batch_size = 12 # bs 12 for 12 Gb GPU VRAM, yours may vary
         self.patch_size = 300
         self.img_dir='airbusdata/train/images'
         self.lab_dir='airbusdata/train/labels'
-        self.start_learning_rate = 0.045
+        self.start_learning_rate = 0.045 # scale this linearly with bs
 
 
 
