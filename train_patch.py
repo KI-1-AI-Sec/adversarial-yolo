@@ -183,8 +183,8 @@ class PatchTrainer(object):
                 print('EPOCH TIME: ', et1-et0)
                 # uncommented (matthew)
                 im = transforms.ToPILImage('RGB')(adv_patch_cpu)
-                plt.imshow(im)
-                plt.show()
+                # plt.imshow(im)
+                # plt.show()
                 if not os.path.exists('saved_patches'):
                     os.makedirs('saved_patches') # create saved_patches folder in CWD
                 im.save("saved_patches/patchnew1.jpg")
