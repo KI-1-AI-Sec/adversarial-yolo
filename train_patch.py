@@ -33,7 +33,8 @@ class PatchTrainer(object):
         #patch helpers
         self.patch_applier = PatchApplier().cuda()
         self.patch_transformer = PatchTransformer().cuda()
-        self.prob_extractor = MaxProbExtractor(0, 80, self.config).cuda()
+        #self.prob_extractor = MaxProbExtractor(0, 80, self.config).cuda()
+        self.prob_extractor = NewMaxProbExtractor(0).cuda()
         self.nps_calculator = NPSCalculator(self.config.printfile, self.config.patch_size).cuda()
         self.total_variation = TotalVariation().cuda()
 
@@ -61,8 +62,8 @@ class PatchTrainer(object):
         #img_size = self.darknet_model.height
         img_size = self.config.img_height
         batch_size = self.config.batch_size
-        n_epochs = 7000
-        max_labels  = 20
+        n_epochs = self.config.max_epochs
+        max_labels  = self.config.max_labels
 
         time_str = time.strftime("%Y%m%d-%H%M%S")
 
@@ -115,13 +116,13 @@ class PatchTrainer(object):
                     #and define printability and smoothness
                     output = self.yolo_model(p_img_batch)
 
-                    #get the average confidence loss
+                    #get the max confidence loss
                     # for an image that has the patch applied
-                    avg_prob = []
-                    for r in output:
-                        box = r.boxes.conf
-                        avg_prob.append(box)
-                    avg_prob = torch.cat(avg_prob, 0)
+                    max_prob = self.prob_extractor(output)
+                    det_loss = torch.tensor(0).cuda()
+                    if max_prob:
+                      max_prob = torch.cat(max_prob)
+                      det_loss = torch.mean(max_prob)
 
                     nps = self.nps_calculator(adv_patch)
                     tv = self.total_variation(adv_patch)
@@ -129,7 +130,7 @@ class PatchTrainer(object):
                     #calculate loss
                     nps_loss = nps*self.config.nps_weight
                     tv_loss = tv*self.config.tv_weight
-                    det_loss = torch.mean(avg_prob)
+                    #det_loss = torch.mean(max_prob)
                     loss = det_loss + nps_loss + torch.max(tv_loss, torch.tensor(0.1).cuda())
 
                     ep_det_loss += det_loss.detach().cpu().numpy()
@@ -159,7 +160,7 @@ class PatchTrainer(object):
                     if i_batch + 1 >= len(train_loader):
                         print('\n')
                     else:
-                        del adv_batch_t, output, avg_prob, det_loss, p_img_batch, nps_loss, tv_loss, loss
+                        del adv_batch_t, output, max_prob, det_loss, p_img_batch, nps_loss, tv_loss, loss
                         torch.cuda.empty_cache()
                     bt0 = time.time()
             et1 = time.time()
@@ -187,7 +188,7 @@ class PatchTrainer(object):
                 if not os.path.exists('saved_patches'):
                     os.makedirs('saved_patches') # create saved_patches folder in CWD
                 im.save("saved_patches/patchnew1.jpg")
-                del adv_batch_t, output, avg_prob, det_loss, p_img_batch, nps_loss, tv_loss, loss
+                del adv_batch_t, output, max_prob, det_loss, p_img_batch, nps_loss, tv_loss, loss
                 torch.cuda.empty_cache()
             et0 = time.time()
 

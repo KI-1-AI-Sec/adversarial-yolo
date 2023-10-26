@@ -63,6 +63,19 @@ class MaxProbExtractor(nn.Module):
 
         return max_conf
 
+class NewMaxProbExtractor(nn.Module):
+  def __init__(self, cls_id):
+    super(NewMaxProbExtractor, self).__init__()
+    self.cls_id = cls_id
+  def forward(self, output):
+    probs = []
+    for r in output:
+      box_conf = r.boxes.conf
+      if box_conf.numel():
+        max = torch.max(box_conf)
+        probs.append(box_conf)
+    return probs
+
 class NPSCalculator(nn.Module):
     """NMSCalculator: calculates the non-printability score of a patch.
 

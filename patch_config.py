@@ -15,12 +15,15 @@ class BaseConfig(object):
         self.cfgfile = "cfg/yolo.cfg"
         self.weightfile = "weights/yolo.weights"
         self.printfile = "non_printability/30values.txt"
+        #Convenience Additions
         self.img_height = 512
         self.img_width = 512
         self.model_path = 'best.pt'
         self.nps_weight = 0.01
         self.tv_weight = 2.5
         self.patch_size = 300
+        self.max_epochs = 5000
+        self.max_labels = 20
 
         self.start_learning_rate = 0.03
 
@@ -131,10 +134,11 @@ class ReproducePaperObj(BaseConfig):
 class AircraftTest(BaseConfig):
     def __init__(self):
         super().__init__()
-        self.batch_size = 12
-        self.patch_size = 100
+        self.batch_size = 8
+        self.patch_size = 300
         self.img_dir='airbusdata/train/images'
         self.lab_dir='airbusdata/train/labels'
+        self.start_learning_rate = 0.045
 
 
 
