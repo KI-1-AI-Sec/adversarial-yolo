@@ -68,7 +68,8 @@ class PatchTrainer(object):
         time_str = time.strftime("%Y%m%d-%H%M%S")
 
         # Generate stating point
-        adv_patch_cpu = self.generate_patch("gray")
+        # adv_patch_cpu = self.generate_patch("gray")
+        adv_patch_cpu = self.generate_patch("random")
         #adv_patch_cpu = self.read_image("saved_patches/patchnew0.jpg")
 
         adv_patch_cpu.requires_grad_(True)

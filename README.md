@@ -42,7 +42,12 @@ cp -r yolo-labels inria/Train/pos/
 # Generating a patch
 `patch_config.py` contains configuration of different experiments. You can design your own experiment by inheriting from the base `BaseConfig` class or an existing experiment. `ReproducePaperObj` reproduces the patch that minimizes object score from the paper (With a lower batch size to fit on a desktop GPU).
 
-You can generate this patch by running:
+Here is a config for patch training on a small subset of satellite imagery of aircraft dataset:
+```
+python train_patch.py airbus-subset-8
+```
+
+Here is another config for patch training (not working currently):
 ```
 python train_patch.py aircraft
 ```

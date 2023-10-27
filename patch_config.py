@@ -129,9 +129,8 @@ class ReproducePaperObj(BaseConfig):
         self.max_tv = 0.165
 
         self.loss_target = lambda obj, cls: obj
-#test config
-#barebones right now, probably needs future modification
-class AircraftTest(BaseConfig):
+
+class AirbusFull(BaseConfig):
     def __init__(self):
         super().__init__()
         self.batch_size = 12 # bs 12 for 12 Gb GPU VRAM, yours may vary
@@ -140,7 +139,14 @@ class AircraftTest(BaseConfig):
         self.lab_dir='airbusdata/train/labels'
         self.start_learning_rate = 0.045 # scale this linearly with bs
 
-
+class AirbusEight(BaseConfig):
+    def __init__(self):
+        super().__init__()
+        self.batch_size = 12 # bs 12 for 12 Gb GPU VRAM, yours may vary
+        self.patch_size = 300
+        self.img_dir='airbus-subset-8/images'
+        self.lab_dir='airbus-subset-8/labels'
+        self.start_learning_rate = 0.045 # scale this linearly with bs
 
 patch_configs = {
     "base": BaseConfig,
@@ -150,5 +156,6 @@ patch_configs = {
     "exp3_low_res": Experiment3LowRes,
     "exp4_class_only": Experiment4ClassOnly,
     "paper_obj": ReproducePaperObj,
-    "aircraft":AircraftTest
+    "aircraft": AirbusFull,
+    "airbus-subset-8": AirbusEight
 }
