@@ -18,6 +18,8 @@ class BaseConfig(object):
         #Convenience Additions
         self.img_height = 512
         self.img_width = 512
+        self.input_width = 640
+        self.input_height = 640
         self.model_path = 'best.pt'
         self.nps_weight = 0.01
         self.tv_weight = 2.5
