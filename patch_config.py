@@ -24,8 +24,7 @@ class BaseConfig(object):
         self.nps_weight = 0.01
         self.tv_weight = 2.5
         self.patch_size = 300
-        # self.max_epochs = 10000
-        self.max_epochs = 500000
+        self.max_epochs = 10000
         self.max_labels = 20
 
         self.start_learning_rate = 0.03
