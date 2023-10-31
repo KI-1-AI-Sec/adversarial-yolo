@@ -60,7 +60,7 @@ class PatchTrainer(object):
         #define image size, batch size, epochs, as well as max labels
         #note: max labels should ALWAYS be >= the actual max label count inside the data
         #img_size = self.darknet_model.height
-        img_size = self.config.input_height
+        img_size = self.config.img_height
         batch_size = self.config.batch_size
         n_epochs = self.config.max_epochs
         max_labels  = self.config.max_labels
