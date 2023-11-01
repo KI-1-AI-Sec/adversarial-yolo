@@ -10,6 +10,7 @@ class BaseConfig(object):
         """
         Set the defaults.
         """
+        self.data_type = "INRIA"
         self.img_dir = "inria/Train/pos"
         self.lab_dir = "inria/Train/pos/yolo-labels"
         self.cfgfile = "cfg/yolo.cfg"
@@ -136,6 +137,7 @@ class AirbusFull(BaseConfig):
         super().__init__()
         self.batch_size = 12 # bs 12 for 12 Gb GPU VRAM, yours may vary
         self.patch_size = 300
+        self.data_type = "AIRBUS"
         self.img_dir='airbusdata/train/images'
         self.lab_dir='airbusdata/train/labels'
         self.start_learning_rate = 0.045 # scale this linearly with bs
@@ -145,6 +147,7 @@ class AirbusEight(BaseConfig):
         super().__init__()
         self.batch_size = 12 # bs 12 for 12 Gb GPU VRAM, yours may vary
         self.patch_size = 300
+        self.data_type = "AIRBUS"
         self.img_dir='airbus-subset-8/images'
         self.lab_dir='airbus-subset-8/labels'
         self.start_learning_rate = 0.045 # scale this linearly with bs

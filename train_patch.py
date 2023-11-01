@@ -74,7 +74,10 @@ class PatchTrainer(object):
 
         adv_patch_cpu.requires_grad_(True)
         #Loads the data set
-        train_loader = torch.utils.data.DataLoader(AirbusDataset(self.config.img_dir, self.config.lab_dir,max_labels,shuffle=True),batch_size=batch_size,shuffle=True,num_workers=10)
+        if self.config.data_type == "AIRBUS":
+            train_loader = torch.utils.data.DataLoader(AirbusDataset(self.config.img_dir, self.config.lab_dir,max_labels,shuffle=True),batch_size=batch_size,shuffle=True,num_workers=10)
+        elif self.config.data_type == "INRIA":
+            train_loader = torch.utils.data.DataLoader(InriaDataset(self.config.img_dir, self.config.lab_dir,max_labels,img_size,shuffle=True),batch_size=batch_size,shuffle=True,num_workers=10)
 
         #print epoch length
         self.epoch_length = len(train_loader)
@@ -109,7 +112,7 @@ class PatchTrainer(object):
                     #gets the image?
                     #probably unnecessary
                     img = p_img_batch[1, :, :,]
-                    img = transforms.ToPILImage()(img.detach().cpu())
+                    #img = transforms.ToPILImage()(img.detach().cpu())
                     #img.show()
 
                     #get output from patch
@@ -158,6 +161,7 @@ class PatchTrainer(object):
                         self.writer.add_scalar('misc/learning_rate', optimizer.param_groups[0]["lr"], iteration)
 
                         self.writer.add_image('patch', adv_patch_cpu, iteration)
+                        self.writer.add_image('applied_patch', img, iteration)
                     if i_batch + 1 >= len(train_loader):
                         print('\n')
                     else:
