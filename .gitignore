@@ -2,7 +2,6 @@ venv/*
 env/*
 weights/*
 inria.tar
-inria/*
 __pycache__/*
 runs/*
 saved_patches/*

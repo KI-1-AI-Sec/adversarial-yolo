@@ -1,0 +1,47 @@
+# PASCAL Annotation Version 1.00
+
+Image filename : "Test/pos/crop001533.png"
+Image size (X x Y x C) : 1059 x 884 x 3
+Database : "The INRIA Rhône-Alpes Annotated Person Database"
+Objects with ground truth : 5 { "PASperson" "PASperson" "PASperson" "PASperson" "PASperson" }
+
+# Note that there might be other objects in the image
+# for which ground truth data has not been provided.
+
+# Top left pixel co-ordinates : (0, 0)
+
+# Details for object 1 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 1 "PASperson" : "UprightPerson"
+Center point on object 1 "PASperson" (X, Y) : (810, 360)
+Bounding box for object 1 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (755, 325) - (847, 645)
+
+# Details for object 2 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 2 "PASperson" : "UprightPerson"
+Center point on object 2 "PASperson" (X, Y) : (670, 358)
+Bounding box for object 2 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (638, 340) - (707, 538)
+
+# Details for object 3 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 3 "PASperson" : "UprightPerson"
+Center point on object 3 "PASperson" (X, Y) : (439, 361)
+Bounding box for object 3 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (405, 343) - (474, 538)
+
+# Details for object 4 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 4 "PASperson" : "UprightPerson"
+Center point on object 4 "PASperson" (X, Y) : (250, 361)
+Bounding box for object 4 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (213, 342) - (285, 554)
+
+# Details for object 5 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 5 "PASperson" : "UprightPerson"
+Center point on object 5 "PASperson" (X, Y) : (993, 359)
+Bounding box for object 5 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (964, 339) - (1015, 500)
+

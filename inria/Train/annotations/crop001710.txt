@@ -1,0 +1,33 @@
+# PASCAL Annotation Version 1.00
+
+Image filename : "Train/pos/crop001710.png"
+Image size (X x Y x C) : 588 x 513 x 3
+Database : "The INRIA Rhône-Alpes Annotated Person Database"
+Objects with ground truth : 3 { "PASperson" "PASperson" "PASperson" }
+
+# Note that there might be other objects in the image
+# for which ground truth data has not been provided.
+
+# Top left pixel co-ordinates : (0, 0)
+
+# Details for object 1 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 1 "PASperson" : "UprightPerson"
+Center point on object 1 "PASperson" (X, Y) : (181, 214)
+Bounding box for object 1 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (150, 193) - (208, 407)
+
+# Details for object 2 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 2 "PASperson" : "UprightPerson"
+Center point on object 2 "PASperson" (X, Y) : (237, 215)
+Bounding box for object 2 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (211, 193) - (260, 352)
+
+# Details for object 3 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 3 "PASperson" : "UprightPerson"
+Center point on object 3 "PASperson" (X, Y) : (374, 204)
+Bounding box for object 3 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (354, 190) - (387, 288)
+

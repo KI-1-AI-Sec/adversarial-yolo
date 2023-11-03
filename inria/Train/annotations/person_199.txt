@@ -1,0 +1,54 @@
+# PASCAL Annotation Version 1.00
+
+Image filename : "Train/pos/person_199.png"
+Image size (X x Y x C) : 640 x 480 x 3
+Database : "The INRIA Rhône-Alpes Annotated Person Database"
+Objects with ground truth : 6 { "PASperson" "PASperson" "PASperson" "PASperson" "PASperson" "PASperson" }
+
+# Note that there might be other objects in the image
+# for which ground truth data has not been provided.
+
+# Top left pixel co-ordinates : (0, 0)
+
+# Details for object 1 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 1 "PASperson" : "UprightPerson"
+Center point on object 1 "PASperson" (X, Y) : (184, 210)
+Bounding box for object 1 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (131, 185) - (215, 401)
+
+# Details for object 2 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 2 "PASperson" : "UprightPerson"
+Center point on object 2 "PASperson" (X, Y) : (257, 199)
+Bounding box for object 2 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (213, 173) - (277, 388)
+
+# Details for object 3 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 3 "PASperson" : "UprightPerson"
+Center point on object 3 "PASperson" (X, Y) : (333, 193)
+Bounding box for object 3 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (288, 171) - (359, 396)
+
+# Details for object 4 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 4 "PASperson" : "UprightPerson"
+Center point on object 4 "PASperson" (X, Y) : (381, 203)
+Bounding box for object 4 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (348, 182) - (402, 385)
+
+# Details for object 5 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 5 "PASperson" : "UprightPerson"
+Center point on object 5 "PASperson" (X, Y) : (555, 195)
+Bounding box for object 5 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (523, 174) - (577, 292)
+
+# Details for object 6 ("PASperson")
+# Center point -- not available in other PASCAL databases -- refers
+# to person head center
+Original label for object 6 "PASperson" : "UprightPerson"
+Center point on object 6 "PASperson" (X, Y) : (401, 204)
+Bounding box for object 6 "PASperson" (Xmin, Ymin) - (Xmax, Ymax) : (387, 189) - (436, 348)
+
