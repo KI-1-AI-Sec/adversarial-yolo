@@ -20,14 +20,16 @@ class BaseConfig(object):
         self.img_height = 512
         self.img_width = 512
         self.model_path = 'best.pt'
-        self.nps_weight = 0.01
-        self.tv_weight = 2.5
+        # self.nps_weight = 0.01
+        self.nps_weight = 0.001
+        # self.tv_weight = 2.5
+        self.tv_weight = 0.25
         self.patch_size = 300
         # self.max_epochs = 10000
-        self.max_epochs = 500000
+        self.max_epochs = 10000
         self.max_labels = 20
 
-        self.start_learning_rate = 0.03
+        self.start_learning_rate = 0.08
 
         self.patch_name = 'base'
 
@@ -152,6 +154,26 @@ class AirbusEight(BaseConfig):
         self.lab_dir='airbus-subset-8/labels'
         self.start_learning_rate = 0.045 # scale this linearly with bs
 
+class AirbusHomogeneousEight(BaseConfig):
+    def __init__(self):
+        super().__init__()
+        self.batch_size = 8 # keep this at 8 or below
+        self.patch_size = 300
+        self.data_type = "AIRBUS"
+        self.img_dir='airbus-homogeneous-8/images'
+        self.lab_dir='airbus-homogeneous-8/labels'
+        self.start_learning_rate = 0.08 # scale this linearly with bs
+
+class AirbusHomogeneousTwentyFour(BaseConfig):
+    def __init__(self):
+        super().__init__()
+        self.batch_size = 24 # keep this at 8 or below
+        self.patch_size = 300
+        self.data_type = "AIRBUS"
+        self.img_dir='airbus-homogeneous-24/images'
+        self.lab_dir='airbus-homogeneous-24/labels'
+        self.start_learning_rate = 0.24 # scale this linearly with bs
+
 patch_configs = {
     "base": BaseConfig,
     "exp1": Experiment1,
@@ -161,5 +183,7 @@ patch_configs = {
     "exp4_class_only": Experiment4ClassOnly,
     "paper_obj": ReproducePaperObj,
     "aircraft": AirbusFull,
-    "airbus-subset-8": AirbusEight
+    "airbus-subset-8": AirbusEight,
+    "airbus-homogeneous-8": AirbusHomogeneousEight,
+    "airbus-homogeneous-24": AirbusHomogeneousTwentyFour
 }
